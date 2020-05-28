@@ -29,7 +29,10 @@ Route::middleware('auth:api')->get('/token/revoke', function (Request $request) 
     return response()->json('DONE');
 });
 
-Route::middleware('auth:api')->get('/cases', function (Request $request) {
-    $cases = DB::table('cases')->get();
-    return response()->json($cases);
-});
+// Route::middleware('auth:api')->get('/cases', function (Request $request) {
+//     $cases = DB::table('cases')->get();
+//     return response()->json($cases);
+// });
+
+Route::middleware('auth:api')->get('/cases', 'CaseController@cases')->name('cases');
+Route::middleware('auth:api')->get('/cases/paginated', 'CaseController@casesPaginated')->name('cases.paginated');
