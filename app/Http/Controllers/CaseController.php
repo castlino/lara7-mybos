@@ -82,9 +82,11 @@ class CaseController extends Controller
     public function casesPaginated(){
           $count = request('count') ? (int) request('count') : 2;
           $page = request('page') ? (int) request('page') : 1;
+          $keywords = request('keywords') ? request('keywords') : '%%';
+          
           $startFrom = ($page - 1) * $count;
           
-          $total = DB::table('cases')->count();
+          $total = DB::table('cases')->where('subject', 'like', '%'.$keywords.'%')->count();
           
           $end = $startFrom + $count;
           if($end > $total){
@@ -97,13 +99,13 @@ class CaseController extends Controller
           }
           
           
-          $cases = DB::table('cases')->skip($startFrom)->take($count)->get();
+          $cases = DB::table('cases')->where('subject', 'like', '%'.$keywords.'%')->skip($startFrom)->take($count)->get();
           return response()->json(
             [
               'count' => $count,
               'page' => $page,
               'start' => $startFrom + 1,
-              'end' => $end,
+              'end' => $keywords,
               'total' => $total,
               'maxPage' => $maxPage,
               'cases' => $cases
