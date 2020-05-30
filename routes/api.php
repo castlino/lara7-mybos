@@ -37,6 +37,7 @@ Route::middleware('auth:api')->get('/token/revoke', function (Request $request) 
 Route::middleware('auth:api')->get('/cases', 'CaseController@cases')->name('cases');
 Route::middleware('auth:api')->get('/case/get-by-id', 'CaseController@getCaseById')->name('cases.getById');
 Route::middleware('auth:api')->get('/cases/paginated', 'CaseController@casesPaginated')->name('cases.paginated');
+Route::middleware('auth:api')->get('/cases/get-type-stats', 'CaseController@getCaseTypeStatistics')->name('cases.typeStats');
 
 Route::middleware('auth:api')->post('/case/set-status', 'CaseController@setCaseStatus')->name('cases.setCaseStatus');
 Route::middleware('auth:api')->post('/case/create-new', 'CaseController@createNewCase')->name('cases.createNewCase');

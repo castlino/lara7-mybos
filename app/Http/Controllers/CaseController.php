@@ -112,4 +112,45 @@ class CaseController extends Controller
             ]
           );
     }
+    
+    public function getCaseTypeStatistics(){
+          $period = request('period') ? request('period') : '-1 month';
+          $timeFrame = new \DateTime($period);
+          
+          $types = ['Other', 'gardening', 'Defects', 'Renovations', 'Cleaning', 'Repair & Maintenance'];
+          
+          $gardening = DB::table('cases')->where([['type', 'gardening'], ['added_date', '>=', $timeFrame]])->count();
+          $other = DB::table('cases')->where([['type', 'Other'], ['added_date', '>=', $timeFrame]])->count();
+          $defects = DB::table('cases')->where([['type', 'Defects'], ['added_date', '>=', $timeFrame]])->count();
+          $renovations = DB::table('cases')->where([['type', 'Renovations'], ['added_date', '>=', $timeFrame]])->count();
+          $cleaning = DB::table('cases')->where([['type', 'Cleaning'], ['added_date', '>=', $timeFrame]])->count();
+          $repairs = DB::table('cases')->where([['type', 'Repair & Maintenance'], ['added_date', '>=', $timeFrame]])->count();
+          
+          $total = $gardening + $other + $defects + $renovations + $cleaning + $repairs;
+          
+          $gardeningPercent = 0;
+          if($gardening>0){ $gardeningPercent = ($gardening/$total)*100; }
+          
+          $otherPercent = 0;
+          if($other>0){ $otherPercent = ($other/$total)*100; }
+          
+          $defectsPercent = 0;
+          if($defects>0){ $defectsPercent = ($defects/$total)*100; }
+          
+          $renovationsPercent = 0;
+          if($renovations>0){ $renovationsPercent = ($renovations/$total)*100; }
+          
+          $cleaningPercent = 0;
+          if($cleaning>0){ $cleaningPercent = ($cleaning/$total)*100; }
+          
+          $repairsPercent = 0;
+          if($repairs>0){ $repairsPercent = ($repairs/$total)*100; }
+          
+          $returnData = [
+            'types' => $types,
+            'percentage' => [$gardeningPercent, $otherPercent, $defectsPercent, $renovationsPercent, $cleaningPercent, $repairsPercent]
+          ];
+          
+          return response()->json( $returnData );
+    }
 }
