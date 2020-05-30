@@ -12,6 +12,27 @@ class CaseController extends Controller
           return response()->json($cases);
     }
     
+    public function getCaseById(){
+          $caseId = request('id') ? (int) request('id') : 0;
+          if($caseId == 0){
+            return response()->json('no id specified.');
+          }
+          
+          $case = DB::table('cases')->where('id', $caseId)->first();
+          return response()->json($case);
+    }
+    
+    public function setCaseStatus(){
+          $id = request('id') ? (int) request('id') : 0;
+          $status = request('status') ? request('status') : '';
+          if($id == 0){
+            return response()->json('no id specified.');
+          }
+
+          $case = DB::table('cases')->where('id', $id)->update(['status' => $status]);
+          return response()->json($status);
+    }
+    
     public function casesPaginated(){
           $count = request('count') ? (int) request('count') : 2;
           $page = request('page') ? (int) request('page') : 1;
