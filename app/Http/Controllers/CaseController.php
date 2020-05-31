@@ -87,6 +87,7 @@ class CaseController extends Controller
                   'subject' => $subject,
                   'description' => $description,
                   'starred' => $starred,
+                  'trashed' => 0,
                   'created_at' => new \DateTime(),
                   'updated_at' => new \DateTime()
                 ]
