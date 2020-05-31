@@ -132,6 +132,47 @@ class CaseController extends Controller
           );
     }
     
+    public function getCaseStatusStatistics(){
+          $timeFrame = new \DateTime(); //now
+          // $timeFrame = strtotime('now'); //now
+    
+          $statuses = ['Current Cases', 'Completed', 'Overdue', 'Trash', 'Starred'];
+    
+          $currentCases = DB::table('cases')
+                          ->where([
+                            ['status', 'not like', 'Completed'], 
+                            ['status', 'not like', 'Deleted'], 
+                            ['due_date', '>', $timeFrame]
+                          ])
+                          ->count();
+                          
+          $completed = DB::table('cases')
+                          ->where('status', 'like', 'Completed')
+                          ->count();
+    
+          $overdue = DB::table('cases')
+                          ->where('due_date', '<', $timeFrame)
+                          ->count();
+                          
+          $trash = DB::table('cases')
+                          ->where('status', 'like', 'Deleted')
+                          ->count();
+                          
+          $starred = DB::table('cases')
+                          ->where('starred', 1)
+                          ->count();
+                          
+          $statusStats = [
+              'currentCase' => $currentCases,
+              'completed' => $completed,
+              'overdue' => $overdue,
+              'trash' => $trash,
+              'starred' => $starred
+          ];
+          
+          return response()->json( $statusStats );
+    }
+    
     public function getCaseTypeStatistics(){
           $period = request('period') ? request('period') : '-1 month';
           $timeFrame = new \DateTime($period);

@@ -23,6 +23,7 @@ class CreateCasesTable extends Migration
             $table->string('priority');
             $table->string('description');
             $table->boolean('starred');
+            $table->boolean('trashed');
             $table->timestamp('added_date')->nullable();
             $table->timestamp('due_date')->nullable();
             $table->timestamps();

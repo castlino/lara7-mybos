@@ -39,6 +39,7 @@ Route::middleware('auth:api')->get('/cases', 'CaseController@cases')->name('case
 Route::middleware('auth:api')->get('/case/get-by-id', 'CaseController@getCaseById')->name('cases.getById');
 Route::middleware('auth:api')->get('/cases/paginated', 'CaseController@casesPaginated')->name('cases.paginated');
 Route::middleware('auth:api')->get('/cases/get-type-stats', 'CaseController@getCaseTypeStatistics')->name('cases.typeStats');
+Route::middleware('auth:api')->get('/cases/get-status-stats', 'CaseController@getCaseStatusStatistics')->name('cases.getCaseStatusStatistics');
 Route::middleware('auth:api')->get('/case/get-next-case-number', 'CaseController@getNextCaseNumber')->name('cases.getNextCaseNumber');
 
 Route::middleware('auth:api')->post('/case/set-status', 'CaseController@setCaseStatus')->name('cases.setCaseStatus');

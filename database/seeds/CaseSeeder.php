@@ -20,6 +20,7 @@ class CaseSeeder extends Seeder
           'priority' => 'low',
           'description' => 'Repair work',
           'starred' => true,
+          'trashed' => false,
           'added_date' => now(),
           'due_date' => now()->addMonthsNoOverflow(2)->format('Y-m-d H:i:s'),
       ]);
@@ -33,6 +34,7 @@ class CaseSeeder extends Seeder
           'priority' => 'high',
           'description' => 'broken tiles',
           'starred' => false,
+          'trashed' => false,
           'added_date' => now()->addDays(-78),
           'due_date' => now()->addMonthsNoOverflow(3)->format('Y-m-d H:i:s'),
       ]);
@@ -46,8 +48,23 @@ class CaseSeeder extends Seeder
           'priority' => 'Urgent',
           'description' => 'Moulds in ceilings',
           'starred' => false,
+          'trashed' => false,
           'added_date' => now()->addDays(-8),
           'due_date' => now()->addMonthsNoOverflow(3)->format('Y-m-d H:i:s'),
+      ]);
+      
+      DB::table('cases')->insert([
+          'case_number' => 23,
+          'subject' => 'Wall leaking with water.',
+          'type' => 'Repair & Maintenance',
+          'status' => 'Awaiting Contractor',
+          'contractors' => 'Repair Men',
+          'priority' => 'Urgent',
+          'description' => 'Burst pipe in between walls',
+          'starred' => true,
+          'trashed' => false,
+          'added_date' => now()->addDays(-4),
+          'due_date' => now()->addMonthsNoOverflow(2)->format('Y-m-d H:i:s'),
       ]);
       
       DB::table('cases')->insert([
@@ -59,8 +76,23 @@ class CaseSeeder extends Seeder
           'priority' => 'Urgent',
           'description' => 'Door vandalised by burlgars',
           'starred' => false,
+          'trashed' => false,
           'added_date' => now()->addDays(-1),
           'due_date' => now()->addMonthsNoOverflow(1)->format('Y-m-d H:i:s'),
+      ]);
+      
+      DB::table('cases')->insert([
+          'case_number' => 25,
+          'subject' => 'Repair of wooden swing',
+          'type' => 'Repair & Maintenance',
+          'status' => 'In Progress',
+          'contractors' => 'Repair Men',
+          'priority' => 'Low',
+          'description' => 'Just normal repair',
+          'starred' => false,
+          'trashed' => false,
+          'added_date' => now()->addDays(-5),
+          'due_date' => now()->addMonthsNoOverflow(8)->format('Y-m-d H:i:s'),
       ]);
       
     }
