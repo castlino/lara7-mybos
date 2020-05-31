@@ -45,4 +45,6 @@ Route::middleware('auth:api')->get('/case/get-next-case-number', 'CaseController
 Route::middleware('auth:api')->post('/case/set-status', 'CaseController@setCaseStatus')->name('cases.setCaseStatus');
 Route::middleware('auth:api')->post('/case/set-star', 'CaseController@setCaseStarred')->name('cases.setCaseStarred');
 Route::middleware('auth:api')->post('/case/create-new', 'CaseController@createNewCase')->name('cases.createNewCase');
+Route::middleware('auth:api')->post('/case/update', 'CaseController@updateCase')->name('cases.updateCase');
+
 

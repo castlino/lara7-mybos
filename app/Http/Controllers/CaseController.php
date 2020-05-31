@@ -99,6 +99,63 @@ class CaseController extends Controller
           
     }
     
+    public function updateCase(){
+          $id = request('id') ? request('id') : 0;
+          if($id == 0){
+            return response()->json(['status' => 'failed']);
+          }
+          
+          $case_number = request('case_number') ? request('case_number') : 0;
+          $type = request('type') ? request('type') : '';
+          $added_date = request('added_date') ? request('added_date') : '';
+          $due_date = request('due_date') ? request('due_date') : '';
+          $priority = request('priority') ? request('priority') : 'Low';
+          $status = request('status') ? request('status') : 'New Type 1';
+          $contractors = request('contractors') ? request('contractors') : '';
+          $subject = request('subject') ? request('subject') : '';
+          $description = request('description') ? request('description') : '';
+          $starred = request('starred') ? request('starred') : 0;
+          
+          if($added_date != ''){
+              $addedDate = new \DateTime($added_date['year'].'-'.$added_date['month'].'-'.$added_date['day']);
+          }
+          else {
+              return response()->json(['status' => 'failed']);
+          }
+          
+          if($due_date != ''){
+              $dueDate = new \DateTime($due_date['year'].'-'.$due_date['month'].'-'.$due_date['day']);
+          }
+          else {
+              return response()->json(['status' => 'failed']);
+          }
+          
+
+          try {
+            $case = DB::table('cases')->where('id', $id)->update(
+                [
+                  'case_number' => $case_number, 
+                  'type' => $type,
+                  'added_date' => $addedDate,
+                  'due_date' => $dueDate,
+                  'priority' => $priority,
+                  'status' => $status,
+                  'contractors' => $contractors,
+                  'subject' => $subject,
+                  'description' => $description,
+                  'starred' => $starred,
+                  'created_at' => new \DateTime(),
+                  'updated_at' => new \DateTime()
+                ]
+            );
+            return response()->json(['status'=>'success', 'id' => $id]);
+          }
+          catch (Exception $e) {
+            return response()->json(['status' => 'failed']);
+          }
+          
+    }
+    
     public function casesPaginated(){
           $count = request('count') ? (int) request('count') : 2;
           $page = request('page') ? (int) request('page') : 1;
