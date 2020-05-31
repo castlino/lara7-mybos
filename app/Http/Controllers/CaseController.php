@@ -30,7 +30,18 @@ class CaseController extends Controller
           }
 
           $case = DB::table('cases')->where('id', $id)->update(['status' => $status]);
-          return response()->json($status);
+          return response()->json('success');
+    }
+    
+    public function setCaseStarred(){
+          $id = request('id') ? (int) request('id') : 0;
+          $starStatus = request('starStatus') ? request('starStatus') : false;
+          if($id == 0){
+            return response()->json('no id specified.');
+          }
+
+          $case = DB::table('cases')->where('id', $id)->update(['starred' => $starStatus]);
+          return response()->json($starStatus);
     }
     
     public function createNewCase(){
@@ -105,7 +116,7 @@ class CaseController extends Controller
               'count' => $count,
               'page' => $page,
               'start' => $startFrom + 1,
-              'end' => $keywords,
+              'end' => $end,
               'total' => $total,
               'maxPage' => $maxPage,
               'cases' => $cases

@@ -40,4 +40,6 @@ Route::middleware('auth:api')->get('/cases/paginated', 'CaseController@casesPagi
 Route::middleware('auth:api')->get('/cases/get-type-stats', 'CaseController@getCaseTypeStatistics')->name('cases.typeStats');
 
 Route::middleware('auth:api')->post('/case/set-status', 'CaseController@setCaseStatus')->name('cases.setCaseStatus');
+Route::middleware('auth:api')->post('/case/set-star', 'CaseController@setCaseStarred')->name('cases.setCaseStarred');
 Route::middleware('auth:api')->post('/case/create-new', 'CaseController@createNewCase')->name('cases.createNewCase');
+

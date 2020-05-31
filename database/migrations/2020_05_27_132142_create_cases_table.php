@@ -22,6 +22,7 @@ class CreateCasesTable extends Migration
             $table->string('contractors');
             $table->string('priority');
             $table->string('description');
+            $table->boolean('starred');
             $table->timestamp('added_date')->nullable();
             $table->timestamp('due_date')->nullable();
             $table->timestamps();

@@ -14,11 +14,12 @@ class CaseSeeder extends Seeder
       DB::table('cases')->insert([
           'case_number' => 20,
           'subject' => 'Oiling woodwork',
-          'type' => 'Upgrades',
+          'type' => 'gardening',
           'status' => 'Completed',
           'contractors' => 'ABC Construction',
           'priority' => 'low',
           'description' => 'Repair work',
+          'starred' => true,
           'added_date' => now(),
           'due_date' => now()->addMonthsNoOverflow(2)->format('Y-m-d H:i:s'),
       ]);
@@ -31,6 +32,7 @@ class CaseSeeder extends Seeder
           'contractors' => 'XZY Construction',
           'priority' => 'high',
           'description' => 'broken tiles',
+          'starred' => false,
           'added_date' => now()->addDays(-78),
           'due_date' => now()->addMonthsNoOverflow(3)->format('Y-m-d H:i:s'),
       ]);
@@ -38,13 +40,27 @@ class CaseSeeder extends Seeder
       DB::table('cases')->insert([
           'case_number' => 22,
           'subject' => 'Maintenance',
-          'type' => 'Defects',
-          'status' => 'New',
+          'type' => 'Renovations',
+          'status' => 'In Progress',
           'contractors' => 'Cleaning Men',
           'priority' => 'Urgent',
           'description' => 'Moulds in ceilings',
-          'added_date' => now()->addDays(-78),
+          'starred' => false,
+          'added_date' => now()->addDays(-8),
           'due_date' => now()->addMonthsNoOverflow(3)->format('Y-m-d H:i:s'),
+      ]);
+      
+      DB::table('cases')->insert([
+          'case_number' => 24,
+          'subject' => 'Repair of broken Door',
+          'type' => 'Repair & Maintenance',
+          'status' => 'In Progress',
+          'contractors' => 'Repair Men',
+          'priority' => 'Urgent',
+          'description' => 'Door vandalised by burlgars',
+          'starred' => false,
+          'added_date' => now()->addDays(-1),
+          'due_date' => now()->addMonthsNoOverflow(1)->format('Y-m-d H:i:s'),
       ]);
       
     }
