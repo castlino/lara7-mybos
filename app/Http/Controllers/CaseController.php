@@ -22,6 +22,13 @@ class CaseController extends Controller
           return response()->json($case);
     }
     
+    public function getNextCaseNumber(){
+          
+          $caseNumber = DB::table('cases')->max('case_number');
+          $caseNumber++;
+          return response()->json($caseNumber);
+    }
+    
     public function setCaseStatus(){
           $id = request('id') ? (int) request('id') : 0;
           $status = request('status') ? request('status') : '';
@@ -54,6 +61,7 @@ class CaseController extends Controller
           $contractors = request('contractors') ? request('contractors') : '';
           $subject = request('subject') ? request('subject') : '';
           $description = request('description') ? request('description') : '';
+          $starred = request('starred') ? request('starred') : 0;
           
           $addedDate = new \DateTime();
           if($added_date != ''){
@@ -78,6 +86,7 @@ class CaseController extends Controller
                   'contractors' => $contractors,
                   'subject' => $subject,
                   'description' => $description,
+                  'starred' => $starred,
                   'created_at' => new \DateTime(),
                   'updated_at' => new \DateTime()
                 ]
@@ -109,7 +118,6 @@ class CaseController extends Controller
             $maxPage++;
           }
           
-          
           $cases = DB::table('cases')->where('subject', 'like', '%'.$keywords.'%')->skip($startFrom)->take($count)->get();
           return response()->json(
             [
@@ -140,22 +148,22 @@ class CaseController extends Controller
           $total = $gardening + $other + $defects + $renovations + $cleaning + $repairs;
           
           $gardeningPercent = 0;
-          if($gardening>0){ $gardeningPercent = ($gardening/$total)*100; }
+          if($gardening>0){ $gardeningPercent = round(($gardening/$total)*100, 2); }
           
           $otherPercent = 0;
-          if($other>0){ $otherPercent = ($other/$total)*100; }
+          if($other>0){ $otherPercent = round(($other/$total)*100, 2); }
           
           $defectsPercent = 0;
-          if($defects>0){ $defectsPercent = ($defects/$total)*100; }
+          if($defects>0){ $defectsPercent = round(($defects/$total)*100, 2); }
           
           $renovationsPercent = 0;
-          if($renovations>0){ $renovationsPercent = ($renovations/$total)*100; }
+          if($renovations>0){ $renovationsPercent = round(($renovations/$total)*100, 2); }
           
           $cleaningPercent = 0;
-          if($cleaning>0){ $cleaningPercent = ($cleaning/$total)*100; }
+          if($cleaning>0){ $cleaningPercent = round(($cleaning/$total)*100, 2); }
           
           $repairsPercent = 0;
-          if($repairs>0){ $repairsPercent = ($repairs/$total)*100; }
+          if($repairs>0){ $repairsPercent = round(($repairs/$total)*100, 2); }
           
           $returnData = [
             'types' => $types,
