@@ -161,10 +161,62 @@ class CaseController extends Controller
           $count = request('count') ? (int) request('count') : 2;
           $page = request('page') ? (int) request('page') : 1;
           $keywords = request('keywords') ? request('keywords') : '%%';
+          $statusFilter = request('statusFilter') ? request('statusFilter') : '';
           
           $startFrom = ($page - 1) * $count;
           
-          $total = DB::table('cases')->where('subject', 'like', '%'.$keywords.'%')->count();
+          // $total = DB::table('cases')->where('subject', 'like', '%'.$keywords.'%')->count();
+          
+          // $end = $startFrom + $count;
+          // if($end > $total){
+          //   $end = $total;
+          // }
+          // 
+          // $maxPage = intdiv($total, $count);
+          // if(fmod($total, $count) > 0){
+          //   $maxPage++;
+          // }
+          
+          $timeFrame = new \DateTime(); //now
+          if($statusFilter == '' || $statusFilter == 'Current Cases'){
+            $cases = DB::table('cases')
+                            ->where([
+                                ['status', 'not like', 'Completed'], 
+                                ['status', 'not like', 'Deleted'], 
+                                ['due_date', '>', $timeFrame],
+                                ['subject', 'like', '%'.$keywords.'%']
+                              ])
+                            ->skip($startFrom)->take($count)->get();
+            $total = DB::table('cases')->where([
+                ['status', 'not like', 'Completed'], 
+                ['status', 'not like', 'Deleted'], 
+                ['due_date', '>', $timeFrame],
+                ['subject', 'like', '%'.$keywords.'%']
+            ])->count();
+          }else if($statusFilter == 'Completed'){
+            $cases = DB::table('cases')
+                            ->where('status', 'like', 'Completed')
+                            ->skip($startFrom)->take($count)->get();
+            $total = DB::table('cases')->where('status', 'like', 'Completed')->count();
+          }else if($statusFilter == 'Overdue'){
+            $cases = DB::table('cases')
+                            ->where('due_date', '<', $timeFrame)
+                            ->skip($startFrom)->take($count)->get();
+            $total = DB::table('cases')->where('due_date', '<', $timeFrame)->count();
+          }else if($statusFilter == 'Trash'){
+            $cases = DB::table('cases')
+                            ->where('status', 'like', 'Deleted')
+                            ->skip($startFrom)->take($count)->get();
+            $total = DB::table('cases')->where('status', 'like', 'Deleted')->count();
+          }else if($statusFilter == 'Starred'){
+            $cases = DB::table('cases')
+                            ->where('starred', 1)
+                            ->skip($startFrom)->take($count)->get();
+            $total = DB::table('cases')->where('starred', 1)->count();
+          }else{
+            $cases = DB::table('cases')->where('subject', 'like', '%'.$keywords.'%')->skip($startFrom)->take($count)->get();
+            $total = DB::table('cases')->where('subject', 'like', '%'.$keywords.'%')->count();
+          }
           
           $end = $startFrom + $count;
           if($end > $total){
@@ -175,8 +227,7 @@ class CaseController extends Controller
           if(fmod($total, $count) > 0){
             $maxPage++;
           }
-          
-          $cases = DB::table('cases')->where('subject', 'like', '%'.$keywords.'%')->skip($startFrom)->take($count)->get();
+            
           return response()->json(
             [
               'count' => $count,
