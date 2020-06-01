@@ -36,8 +36,23 @@ class CaseController extends Controller
             return response()->json('no id specified.');
           }
 
-          $case = DB::table('cases')->where('id', $id)->update(['status' => $status]);
+          $updatedDate = new \DateTime();
+          $case = DB::table('cases')->where('id', $id)->update(['status' => $status, 'updated_at' => $updatedDate]);
           return response()->json('success');
+    }
+    
+    public function setCaseStatusMulti(){
+          $ids = request('ids') ? request('ids') : [];
+          $status = request('status') ? request('status') : '';
+
+          if(empty($ids)){
+            return response()->json('no id specified.');
+          }
+
+          $updatedDate = new \DateTime();
+          $case = DB::table('cases')->whereIn('case_number', $ids)->update(['status' => $status, 'updated_at' => $updatedDate]);
+          return response()->json('success');
+          // return response()->json($status);
     }
     
     public function setCaseStarred(){
