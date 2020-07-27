@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\DB;
 class CaseController extends Controller
 {
     // Test change...
-    
+
     public function cases(){
           $cases = DB::table('cases')->take(2)->get();
           return response()->json($cases);
     }
+
+    // Added line from master branch...
 
     public function getCaseById(){
           $caseId = request('id') ? (int) request('id') : 0;
