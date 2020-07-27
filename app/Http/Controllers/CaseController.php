@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class CaseController extends Controller
 {
     // Test change...
+    // Added test branch...
 
     public function cases(){
           $cases = DB::table('cases')->take(2)->get();
